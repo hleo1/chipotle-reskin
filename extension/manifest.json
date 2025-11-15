@@ -16,13 +16,26 @@
   "content_scripts": [
     {
       "matches": ["https://www.chipotle.com/*"],
-      "js": ["content.js"],
+      "js": [
+        "voice-generation/voices.js",
+        "voice-generation/prompts.js",
+        "voice-generation/playVoice.js",
+        "voice-generation/index.js",
+        "voice-generation/main.js",
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["images/replacement-image.png", "pictures/**/*.png", "hero-section/**/*.png", "info-icon.png"],
+      "resources": [
+        "images/replacement-image.png",
+        "pictures/**/*.png",
+        "hero-section/**/*.png",
+        "info-icon.png",
+        "voice-generation/voices/**/*.mp3"
+      ],
       "matches": ["https://www.chipotle.com/*"]
     }
   ]

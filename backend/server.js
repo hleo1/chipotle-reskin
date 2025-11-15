@@ -228,6 +228,26 @@ app.post('/api/food-info', async (req, res) => {
   }
 });
 
+// Root endpoint - show available routes
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Chipotle Food Info API',
+    version: '1.0.0',
+    endpoints: {
+      health: 'GET /health',
+      foodInfo: 'POST /api/food-info',
+      cacheStats: 'GET /api/cache/stats'
+    },
+    example: {
+      url: 'POST /api/food-info',
+      body: {
+        foodName: 'Jerk Chicken',
+        country: 'jamaican'
+      }
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/health', async (req, res) => {
   const redisStatus = redisClient && redisClient.isOpen ? 'connected' : 'disconnected';
