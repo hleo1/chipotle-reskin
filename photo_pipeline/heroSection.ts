@@ -289,10 +289,7 @@ The lighting should be bright and appetizing, highlighting the freshness and col
   }
 }
 
-async function main() {
-  // const configPath = path.join(__dirname, "configs", "italian-food-config.json");
-  const configPath = path.join(__dirname, "configs", "jamaican-food-config.json");
-  
+export async function generateHeroSection(configPath: string) {
   // Load config to get country name
   const configFile = fs.readFileSync(configPath, "utf-8");
   const config: FoodConfig = JSON.parse(configFile);
@@ -307,6 +304,4 @@ async function main() {
 
   await generator.generateAll();
 }
-
-main();
 
