@@ -290,7 +290,8 @@ The lighting should be bright and appetizing, highlighting the freshness and col
 }
 
 async function main() {
-  const configPath = path.join(__dirname, "food-config.json");
+  // const configPath = path.join(__dirname, "configs", "italian-food-config.json");
+  const configPath = path.join(__dirname, "configs", "jamaican-food-config.json");
   
   // Load config to get country name
   const configFile = fs.readFileSync(configPath, "utf-8");

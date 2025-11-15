@@ -24,7 +24,8 @@ function createPromptFunction(template: string): (food: FoodItem) => string {
 
 async function main() {
   // Read and parse the JSON config file
-  const configPath = path.join(__dirname, "food-config.json");
+  // const configPath = path.join(__dirname, "configs", "italian-food-config.json");
+  const configPath = path.join(__dirname, "configs", "jamaican-food-config.json");
   const configFile = fs.readFileSync(configPath, "utf-8");
   const config: FoodConfig = JSON.parse(configFile);
 

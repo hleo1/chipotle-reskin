@@ -1,0 +1,83 @@
+{
+  "apiKey": "AIzaSyA_SK0seFIWdDosdbgsvQR0mSVcAr903i8",
+  "country": "chinese",
+  "categories": [
+    {
+      "foodType": "rice",
+      "items": [
+        {
+          "fullName": "Steamed White Rice: Fluffy jasmine rice, perfectly steamed and light.",
+          "shortName": "steamed-rice"
+        },
+        {
+          "fullName": "Fried Rice: Wok-fried rice with eggs, scallions, and soy sauce, golden and aromatic.",
+          "shortName": "fried-rice"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} scooped and dropped naturally onto a surface, creating an irregular, organic pile with uneven edges. The food should spread asymmetrically with some pieces extending beyond the main mound, looking casually served rather than perfectly arranged. Natural texture variations and slight spillage. The food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no plate, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout. Strictly no text, no letters, no words, no labels, no writing of any kind should appear anywhere in the image."
+    },
+    {
+      "foodType": "protein-vegetable",
+      "items": [
+        {
+          "fullName": "General Tso's Chicken: Crispy chicken pieces in a sweet and spicy sauce with garlic and ginger.",
+          "shortName": "general-tso-chicken"
+        },
+        {
+          "fullName": "Kung Pao Chicken: Diced chicken stir-fried with peanuts, vegetables, and spicy Sichuan peppers.",
+          "shortName": "kung-pao-chicken"
+        },
+        {
+          "fullName": "Sweet and Sour Pork: Tender pork pieces in a tangy sweet and sour sauce with bell peppers and pineapple.",
+          "shortName": "sweet-sour-pork"
+        },
+        {
+          "fullName": "Mapo Tofu: Soft tofu in a spicy Sichuan sauce with ground pork, fermented beans, and Sichuan peppercorns.",
+          "shortName": "mapo-tofu"
+        },
+        {
+          "fullName": "Beef and Broccoli: Tender beef strips stir-fried with fresh broccoli in a savory brown sauce.",
+          "shortName": "beef-broccoli"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} arranged in a pile. Minimalist, with seasoning but no toppings. The food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no plate, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout. Strictly no text, no letters, no words, no labels, no writing of any kind should appear anywhere in the image."
+    },
+    {
+      "foodType": "beans",
+      "items": [
+        {
+          "fullName": "Edamame: Steamed young soybeans in the pod, lightly salted, bright green and tender.",
+          "shortName": "edamame"
+        },
+        {
+          "fullName": "Black Bean Sauce: Fermented black beans in a savory sauce with garlic and soy, rich and umami.",
+          "shortName": "black-bean-sauce"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} naturally scattered and piled on a surface. The beans should be visible individually, some clustered together, some spread out, creating an organic, casual arrangement. Some beans may have a light coating of sauce or oil, showing natural variations in texture and sheen. The pile should have irregular edges with beans extending beyond the main cluster. The food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no plate, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout. Strictly no text, no letters, no words, no labels, no writing of any kind should appear anywhere in the image."
+    },
+    {
+      "foodType": "toppings",
+      "items": [
+        {
+          "fullName": "Soy Sauce: Dark, savory soy sauce, rich and salty with umami flavor.",
+          "shortName": "soy-sauce"
+        },
+        {
+          "fullName": "Chili Oil: Spicy oil infused with chili flakes, Sichuan peppercorns, and aromatics.",
+          "shortName": "chili-oil"
+        },
+        {
+          "fullName": "Hoisin Sauce: Sweet and savory hoisin sauce with soybeans, garlic, and spices.",
+          "shortName": "hoisin-sauce"
+        },
+        {
+          "fullName": "Duck Sauce: Sweet and tangy orange-colored sauce made from plums and apricots.",
+          "shortName": "duck-sauce"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} served in a small white condiment cup. The condiment cup should be a small circular container with visible edges. The topping inside the cup must fill the entire circular opening, forming a perfect full circle with no gaps or missing edges. The food should completely fill the cup's circular opening from edge to edge. If it's a sauce or pesto, show it as a circular mound filling the cup. If it's grated cheese, show it piled in a circular shape filling the cup. If it's vegetables or diced items, arrange them to form a complete circular arrangement that fills the entire cup opening. The circle must be full and complete, with all edges clearly defined and touching the cup's inner rim. The condiment cup and food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item and cup itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout. Strictly no text, no letters, no words, no labels, no writing of any kind should appear anywhere in the image."
+    }
+  ]
+}
+
