@@ -58,9 +58,10 @@ function stopCurrentAudio() {
 }
 
 /**
- * Play video avatar (smiling.mp4) when audio plays
+ * Play video avatar (smiling.mp4 or frustrated.mp4) when audio plays
+ * @param {boolean} isFallback - If true, play frustrated.mp4, otherwise play smiling.mp4
  */
-function playVideoAvatar() {
+function playVideoAvatar(isFallback = false) {
   try {
     const videoContainer = document.querySelector('.chipotle-top-video');
     if (!videoContainer) {
@@ -81,10 +82,12 @@ function playVideoAvatar() {
       return;
     }
     
-    // Update video source to smiling.mp4 if needed
-    const expectedUrl = chrome.runtime.getURL(`videos/${cuisine}/smiling.mp4`);
-    // Compare URLs properly (video.src might have different format)
-    if (!video.src.includes(`videos/${cuisine}/smiling.mp4`)) {
+    // Choose video based on whether it's a fallback
+    const videoFile = isFallback ? 'frustrated.mp4' : 'smiling.mp4';
+    const expectedUrl = chrome.runtime.getURL(`videos/${cuisine}/${videoFile}`);
+    
+    // Update video source if needed
+    if (!video.src.includes(`videos/${cuisine}/${videoFile}`)) {
       video.src = expectedUrl;
       video.load();
     }
@@ -133,9 +136,10 @@ function stopVideoAvatar() {
 /**
  * Play audio from a URL (MP3 file)
  * @param {string} audioUrl - URL to the audio file
+ * @param {boolean} isFallback - If true, play frustrated.mp4 video, otherwise play smiling.mp4
  * @returns {Promise<void>} Promise that resolves when audio finishes playing
  */
-function playAudioFromUrl(audioUrl) {
+function playAudioFromUrl(audioUrl, isFallback = false) {
   return new Promise((resolve, reject) => {
     try {
       // Check if user has interacted (required for autoplay policy)
@@ -157,8 +161,8 @@ function playAudioFromUrl(audioUrl) {
       // Preload the audio
       audio.preload = 'auto';
       
-      // Play video avatar when audio starts
-      playVideoAvatar();
+      // Play video avatar when audio starts (pass isFallback flag)
+      playVideoAvatar(isFallback);
       
       // Handle successful playback
       audio.onended = () => {
@@ -302,6 +306,12 @@ window.VoiceSystem.playVoice = async function(text, voiceConfig, apiKey = null) 
     return;
   }
   
+  // Detect if this is a fallback/scream audio by checking the mp3Path
+  const isFallback = voiceConfig.mp3Path && (
+    voiceConfig.mp3Path.includes('scream') || 
+    voiceConfig.mp3Path.includes('fallback')
+  );
+  
   // Stop any currently playing audio
   stopCurrentAudio();
   
@@ -310,7 +320,7 @@ window.VoiceSystem.playVoice = async function(text, voiceConfig, apiKey = null) 
     try {
       console.log('Attempting ElevenLabs API playback...');
       const audioUrl = await generateElevenLabsAudio(text, voiceConfig.elevenlabsId, apiKey);
-      await playAudioFromUrl(audioUrl);
+      await playAudioFromUrl(audioUrl, isFallback);
       // Clean up blob URL after playback
       URL.revokeObjectURL(audioUrl);
       return;
@@ -325,7 +335,7 @@ window.VoiceSystem.playVoice = async function(text, voiceConfig, apiKey = null) 
     console.log('Playing local MP3 file:', voiceConfig.mp3Path);
     const mp3Url = chrome.runtime.getURL(voiceConfig.mp3Path);
     console.log('MP3 URL:', mp3Url);
-    await playAudioFromUrl(mp3Url);
+    await playAudioFromUrl(mp3Url, isFallback);
     console.log('MP3 playback completed');
   } catch (error) {
     // Only log error, don't throw - autoplay blocking is expected
