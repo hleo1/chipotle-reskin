@@ -62,29 +62,45 @@
       /* Info button styles */
       .chipotle-info-button {
         position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        top: 10px;
+        right: 10px;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        border: none;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         z-index: 10;
-        font-size: 14px;
-        font-weight: bold;
-        color: #333;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        padding: 0;
       }
       
       .chipotle-info-button:hover {
         background-color: rgba(255, 255, 255, 1);
-        transform: scale(1.1);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+      }
+      
+      .chipotle-info-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+      
+      .chipotle-info-button img {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        display: block;
+        transition: opacity 0.2s ease;
+      }
+      
+      .chipotle-info-button:hover img {
+        opacity: 0.8;
       }
       
       .meal-builder-item-selector-card-container {
@@ -264,11 +280,18 @@
     }
 
     // Create info button
-    const infoButton = document.createElement('div');
+    const infoButton = document.createElement('button');
     infoButton.className = 'chipotle-info-button';
     infoButton.setAttribute('aria-label', `Learn about ${foodName}`);
-    infoButton.textContent = 'ℹ️';
     infoButton.title = `Learn about ${foodName}`;
+    infoButton.type = 'button';
+    
+    // Create image icon
+    const iconImg = document.createElement('img');
+    iconImg.src = chrome.runtime.getURL('info-icon.png');
+    iconImg.alt = 'Info';
+    iconImg.setAttribute('aria-hidden', 'true');
+    infoButton.appendChild(iconImg);
     
     infoButton.addEventListener('click', (e) => {
       e.stopPropagation();
