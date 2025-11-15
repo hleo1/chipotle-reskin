@@ -1,6 +1,14 @@
-# Chipotle Steak Picture Replacer Extension
+# Chipotle Food Card Customizer Extension
 
-This browser extension replaces the steak picture on Chipotle's website (https://www.chipotle.com/order/build/burrito-bowl) with your own custom image.
+This browser extension replaces food cards on Chipotle's website with custom images and names, and provides educational information about each food item through an info button feature.
+
+## Features
+
+- **Custom Food Cards**: Replace Chipotle's menu items with your own cuisine (Italian, Mongolian, etc.)
+- **Info Buttons**: Click the ℹ️ button on any food card to learn:
+  - What the food item is
+  - How it's prepared in the specific country/cuisine
+- **Dynamic Cuisine Support**: Works with any cuisine you configure - just update the food items and images
 
 ## Installation
 
@@ -20,30 +28,63 @@ This browser extension replaces the steak picture on Chipotle's website (https:/
 4. Select the `manifest.json` file from the `extension` folder
 5. The extension should now be active!
 
-## Customizing Your Replacement Image
+## Setting Up Backend Server (Required for Info Buttons)
 
-1. Replace the file `images/replacement-image.png` with your own image
-2. Keep the filename as `replacement-image.png`, or update the `REPLACEMENT_IMAGE` constant in `content.js` to match your new filename
-3. Reload the extension in your browser
+The info button feature requires a backend server with Redis caching. 
+
+### Quick Setup:
+
+1. **Set up the backend server:**
+   ```bash
+   cd backend
+   npm install
+   # Follow instructions in backend/SETUP.md
+   npm start
+   ```
+
+2. **The extension is already configured** to use `http://localhost:3000` by default.
+
+3. **For production deployment:**
+   - Deploy backend to Railway, Render, or similar
+   - Update `BACKEND_URL` in `extension/background.js` to your deployed URL
+   - Or set it via console:
+   ```javascript
+   chrome.runtime.sendMessage({
+     action: 'setBackendUrl',
+     url: 'https://your-backend-url.com'
+   });
+   ```
+
+See `backend/README.md` for detailed setup instructions.
+
+## Customizing Your Food Items
+
+1. Update `FOOD_ITEMS_BY_SECTION` in `content.js` with your food items
+2. Add corresponding images to the `pictures/[country]/` folders
+3. The extension automatically extracts the country from the image path (e.g., `italian/proteins_veg/...` → `italian`)
 
 ## How It Works
 
 The extension uses a content script that:
 - Runs on all Chipotle.com pages
-- Searches for images containing "steak" in their src, alt text, or title
-- Also checks for steak-related elements using data attributes
-- Replaces matching images with your custom image
-- Watches for dynamically loaded content (Chipotle uses a single-page application)
+- Replaces food cards with your custom images and names
+- Adds info buttons (ℹ️) to each food card
+- When clicked, fetches information from Tavily API about:
+  - What the food item is (general information)
+  - How it's prepared in the specific country/cuisine (cultural context)
+- Caches results to minimize API calls
 
 ## Files
 
 - `manifest.json` - Extension configuration
-- `content.js` - Main script that performs the image replacement
-- `images/replacement-image.png` - Your replacement image (customize this!)
+- `content.js` - Main script that performs card replacement and info button functionality
+- `background.js` - Service worker that handles Tavily API calls
+- `pictures/` - Folder containing food images organized by country/cuisine
 
 ## Notes
 
 - The extension automatically watches for new content loaded by Chipotle's dynamic page updates
-- It runs every 2 seconds as a backup to catch any missed images
-- Check the browser console for logs of replaced images
+- Info button results are cached for 7 days to reduce API usage
+- Check the browser console for logs and any errors
+- The extension works with any cuisine - just update the food items and ensure images are in the correct folder structure
 

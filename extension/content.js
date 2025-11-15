@@ -32,7 +32,13 @@
   // Track custom cards to persist their images
   const customCards = new WeakMap();
 
-  // Inject CSS to override background images with !important
+  // Extract country from image path (e.g., "italian/proteins_veg/..." -> "italian")
+  function extractCountryFromImagePath(imagePath) {
+    const match = imagePath.match(/^([^/]+)\//);
+    return match ? match[1] : 'italian'; // Default to italian if not found
+  }
+
+  // Inject CSS to override background images with !important and style info buttons/modal
   function injectPersistentCSS() {
     const styleId = 'chipotle-custom-images';
     if (document.getElementById(styleId)) {
@@ -45,15 +51,233 @@
       .meal-builder-item-selector-card-container[data-custom-image] {
         background-image: var(--custom-bg-image) !important;
       }
+      
+      /* Info button styles */
+      .chipotle-info-button {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .chipotle-info-button:hover {
+        background-color: rgba(255, 255, 255, 1);
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      .meal-builder-item-selector-card-container {
+        position: relative;
+      }
+      
+      /* Modal styles */
+      .chipotle-info-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.2s ease;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      .chipotle-info-modal {
+        background: white;
+        border-radius: 12px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+        position: relative;
+      }
+      
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      
+      .chipotle-info-modal-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 1;
+      }
+      
+      .chipotle-info-modal-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+      }
+      
+      .chipotle-info-modal-close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #666;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+      }
+      
+      .chipotle-info-modal-close:hover {
+        background-color: #f0f0f0;
+        color: #333;
+      }
+      
+      .chipotle-info-modal-content {
+        padding: 24px;
+      }
+      
+      .chipotle-info-section {
+        margin-bottom: 32px;
+      }
+      
+      .chipotle-info-section:last-child {
+        margin-bottom: 0;
+      }
+      
+      .chipotle-info-section-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+      
+      .chipotle-info-section-content {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #555;
+      }
+      
+      .chipotle-info-loading {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+      }
+      
+      .chipotle-info-loading-spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #333;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .chipotle-info-error {
+        padding: 20px;
+        background-color: #fee;
+        border: 1px solid #fcc;
+        border-radius: 8px;
+        color: #c33;
+        text-align: center;
+      }
+      
+      .chipotle-info-sources {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #e0e0e0;
+      }
+      
+      .chipotle-info-source {
+        font-size: 13px;
+        color: #666;
+        margin-bottom: 8px;
+      }
+      
+      .chipotle-info-source a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      
+      .chipotle-info-source a:hover {
+        text-decoration: underline;
+      }
     `;
     document.head.appendChild(style);
   }
 
+  // Helper function to add info button to a card
+  function addInfoButton(card, foodName, country) {
+    // Remove existing info button if present
+    const existingButton = card.querySelector('.chipotle-info-button');
+    if (existingButton) {
+      existingButton.remove();
+    }
+
+    // Create info button
+    const infoButton = document.createElement('div');
+    infoButton.className = 'chipotle-info-button';
+    infoButton.setAttribute('aria-label', `Learn about ${foodName}`);
+    infoButton.textContent = 'ℹ️';
+    infoButton.title = `Learn about ${foodName}`;
+    
+    infoButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      showFoodInfoModal(foodName, country);
+    });
+
+    card.appendChild(infoButton);
+  }
+
   // Helper function to update a card with new image and name
-  function updateCard(card, imageUrl, newName) {
+  function updateCard(card, imageUrl, newName, imagePath) {
     // Store custom image URL in data attribute and WeakMap for persistence
     card.setAttribute('data-custom-image', imageUrl);
-    customCards.set(card, { imageUrl, name: newName });
+    const country = extractCountryFromImagePath(imagePath);
+    customCards.set(card, { imageUrl, name: newName, country, imagePath });
 
     // Use setProperty with !important flag for maximum persistence
     card.style.setProperty('background-image', `url(${imageUrl})`, 'important');
@@ -92,6 +316,9 @@
       titleButton.setAttribute('data-qa-item-name-title', newName);
       console.log(`Updated data-qa-item-name-title for: ${newName}`);
     }
+
+    // Add info button
+    addInfoButton(card, newName, country);
   }
 
   // Function to re-apply custom images to cards that have been reset
@@ -110,6 +337,11 @@
           card.style.setProperty('background-image', `url(${expectedUrl})`, 'important');
           card.style.setProperty('--custom-bg-image', `url(${expectedUrl})`, 'important');
           console.log(`Re-applied custom image for: ${customData.name}`);
+        }
+
+        // Re-apply info button if missing
+        if (!card.querySelector('.chipotle-info-button')) {
+          addInfoButton(card, customData.name, customData.country);
         }
       }
     });
@@ -163,7 +395,13 @@
       
       // Only update if not already customized
       if (cardName !== foodItem.name) {
-        updateCard(card, imageUrl, foodItem.name);
+        updateCard(card, imageUrl, foodItem.name, foodItem.image);
+      } else {
+        // Ensure info button is present even if card is already customized
+        const customData = customCards.get(card);
+        if (customData && !card.querySelector('.chipotle-info-button')) {
+          addInfoButton(card, foodItem.name, customData.country);
+        }
       }
     }
 
@@ -278,6 +516,170 @@
   }
   requestAnimationFrame(persistentCheck);
 
-  console.log('Chipotle Food Card Customizer loaded with persistent image support');
+  // Modal functionality
+  function showFoodInfoModal(foodName, country) {
+    // Remove existing modal if present
+    const existingModal = document.querySelector('.chipotle-info-modal-overlay');
+    if (existingModal) {
+      existingModal.remove();
+    }
+
+    // Create modal overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'chipotle-info-modal-overlay';
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'chipotle-info-modal';
+    
+    // Modal header
+    const header = document.createElement('div');
+    header.className = 'chipotle-info-modal-header';
+    
+    const title = document.createElement('h2');
+    title.className = 'chipotle-info-modal-title';
+    title.textContent = foodName;
+    
+    const closeButton = document.createElement('button');
+    closeButton.className = 'chipotle-info-modal-close';
+    closeButton.textContent = '×';
+    closeButton.setAttribute('aria-label', 'Close');
+    closeButton.addEventListener('click', () => overlay.remove());
+    
+    header.appendChild(title);
+    header.appendChild(closeButton);
+    
+    // Modal content
+    const content = document.createElement('div');
+    content.className = 'chipotle-info-modal-content';
+    
+    // Loading state
+    const loading = document.createElement('div');
+    loading.className = 'chipotle-info-loading';
+    loading.innerHTML = `
+      <div class="chipotle-info-loading-spinner"></div>
+      <div>Loading information about ${foodName}...</div>
+    `;
+    content.appendChild(loading);
+    
+    modal.appendChild(header);
+    modal.appendChild(content);
+    overlay.appendChild(modal);
+    
+    // Close on overlay click
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.remove();
+      }
+    });
+    
+    // Close on Escape key
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        overlay.remove();
+        document.removeEventListener('keydown', handleEscape);
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    
+    document.body.appendChild(overlay);
+    
+    // Fetch food information
+    chrome.runtime.sendMessage(
+      {
+        action: 'getFoodInfo',
+        foodName: foodName,
+        country: country
+      },
+      (response) => {
+        // Remove loading
+        loading.remove();
+        
+        if (!response || !response.success) {
+          const error = document.createElement('div');
+          error.className = 'chipotle-info-error';
+          error.textContent = response?.error || 'Failed to load information. Please check your Tavily API key in extension settings.';
+          content.appendChild(error);
+          return;
+        }
+
+        const data = response.data;
+        
+        // General information section
+        const generalSection = document.createElement('div');
+        generalSection.className = 'chipotle-info-section';
+        
+        const generalTitle = document.createElement('h3');
+        generalTitle.className = 'chipotle-info-section-title';
+        generalTitle.textContent = `What are ${foodName}?`;
+        
+        const generalContent = document.createElement('div');
+        generalContent.className = 'chipotle-info-section-content';
+        generalContent.textContent = data.general.answer;
+        
+        generalSection.appendChild(generalTitle);
+        generalSection.appendChild(generalContent);
+        
+        // Add sources if available
+        if (data.general.sources && data.general.sources.length > 0) {
+          const sources = document.createElement('div');
+          sources.className = 'chipotle-info-sources';
+          sources.innerHTML = '<strong>Sources:</strong>';
+          data.general.sources.forEach(source => {
+            const sourceDiv = document.createElement('div');
+            sourceDiv.className = 'chipotle-info-source';
+            const link = document.createElement('a');
+            link.href = source.url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = source.title || source.url;
+            sourceDiv.appendChild(link);
+            sources.appendChild(sourceDiv);
+          });
+          generalSection.appendChild(sources);
+        }
+        
+        content.appendChild(generalSection);
+        
+        // Cultural/preparation information section
+        const culturalSection = document.createElement('div');
+        culturalSection.className = 'chipotle-info-section';
+        
+        const culturalTitle = document.createElement('h3');
+        culturalTitle.className = 'chipotle-info-section-title';
+        culturalTitle.textContent = `How it's prepared in ${country.charAt(0).toUpperCase() + country.slice(1)}`;
+        
+        const culturalContent = document.createElement('div');
+        culturalContent.className = 'chipotle-info-section-content';
+        culturalContent.textContent = data.cultural.answer;
+        
+        culturalSection.appendChild(culturalTitle);
+        culturalSection.appendChild(culturalContent);
+        
+        // Add sources if available
+        if (data.cultural.sources && data.cultural.sources.length > 0) {
+          const sources = document.createElement('div');
+          sources.className = 'chipotle-info-sources';
+          sources.innerHTML = '<strong>Sources:</strong>';
+          data.cultural.sources.forEach(source => {
+            const sourceDiv = document.createElement('div');
+            sourceDiv.className = 'chipotle-info-source';
+            const link = document.createElement('a');
+            link.href = source.url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = source.title || source.url;
+            sourceDiv.appendChild(link);
+            sources.appendChild(sourceDiv);
+          });
+          culturalSection.appendChild(sources);
+        }
+        
+        content.appendChild(culturalSection);
+      }
+    );
+  }
+
+  console.log('Chipotle Food Card Customizer loaded with persistent image support and food information');
 })();
 
