@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Chipotle Steak Picture Replacer",
+  "version": "1.0.0",
+  "description": "Replaces the steak picture on Chipotle's website with your own image",
+  "permissions": [],
+  "content_scripts": [
+    {
+      "matches": ["https://www.chipotle.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["images/replacement-image.png", "pictures/*.png"],
+      "matches": ["https://www.chipotle.com/*"]
+    }
+  ]
+}
+

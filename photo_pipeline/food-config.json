@@ -1,0 +1,83 @@
+{
+  "apiKey": "AIzaSyA_SK0seFIWdDosdbgsvQR0mSVcAr903i8",
+  "country": "italian",
+  "categories": [
+    {
+      "foodType": "rice",
+      "items": [
+        {
+          "fullName": "Creamy Risotto (Risotto): Traditional Italian rice cooked slowly with broth until creamy and rich.",
+          "shortName": "risotto"
+        },
+        {
+          "fullName": "Polenta: Slow-cooked cornmeal, creamy and smooth, a Northern Italian staple.",
+          "shortName": "polenta"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} scooped and dropped naturally onto a surface, creating an irregular, organic pile with uneven edges. The food should spread asymmetrically with some pieces extending beyond the main mound, looking casually served rather than perfectly arranged. Natural texture variations and slight spillage. The food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no plate, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout."
+    },
+    {
+      "foodType": "protein-vegetable",
+      "items": [
+        {
+          "fullName": "Herbed Roasted Chicken (Pollo Arrosto): Slow-roasted chicken, pulled and seasoned with Italian herbs like thyme and sage.",
+          "shortName": "herbed-chicken"
+        },
+        {
+          "fullName": "Braised Beef Stracotto (Stracotto di Manzo): Beef slow-cooked for hours until tender and shredded, a Tuscan favorite.",
+          "shortName": "braised-beef-stracotto"
+        },
+        {
+          "fullName": "Sausage & Peppers (Salsiccia e Peperoni): Crumbled Italian sausage sautéed with sweet roasted red and yellow bell peppers.",
+          "shortName": "sausage-peppers"
+        },
+        {
+          "fullName": "Garlic Shrimp (Gamberetti Aglio e Olio): Shrimp quickly sautéed with garlic, olive oil, and a touch of chili flake.",
+          "shortName": "garlic-shrimp"
+        },
+        {
+          "fullName": "Eggplant & Mushroom Veggie (Melanzane e Funghi)",
+          "shortName": "eggplant-mushroom"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} arranged in a pile. Minimalist, with seasoning but no toppings. The food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no plate, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout."
+    },
+    {
+      "foodType": "beans",
+      "items": [
+        {
+          "fullName": "Cannellini Beans (Fagioli Cannellini): Creamy white kidney beans, slow-cooked until tender with garlic, sage, and olive oil.",
+          "shortName": "cannellini-beans"
+        },
+        {
+          "fullName": "Borlotti Beans (Fagioli Borlotti): Speckled pink and white cranberry beans, simmered with tomatoes, rosemary, and Italian herbs.",
+          "shortName": "borlotti-beans"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} naturally scattered and piled on a surface. The beans should be visible individually, some clustered together, some spread out, creating an organic, casual arrangement. Some beans may have a light coating of sauce or oil, showing natural variations in texture and sheen. The pile should have irregular edges with beans extending beyond the main cluster. The food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no plate, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout."
+    },
+    {
+      "foodType": "toppings",
+      "items": [
+        {
+          "fullName": "Bruschetta Topping (Pomodoro e Basilico): Diced fresh tomatoes, torn basil leaves, minced garlic, and extra virgin olive oil, seasoned with salt and pepper.",
+          "shortName": "bruschetta-topping"
+        },
+        {
+          "fullName": "Grated Parmesan (Parmigiano Reggiano): Freshly grated aged Parmigiano Reggiano cheese, nutty and salty.",
+          "shortName": "grated-parmesan"
+        },
+        {
+          "fullName": "Peperonata: Roasted red and yellow bell peppers with onions, slow-cooked in olive oil with garlic and herbs.",
+          "shortName": "peperonata"
+        },
+        {
+          "fullName": "Basil Pesto (Pesto alla Genovese): Fresh basil, pine nuts, garlic, Parmigiano Reggiano, and extra virgin olive oil, blended into a vibrant green sauce.",
+          "shortName": "basil-pesto"
+        }
+      ],
+      "promptTemplate": "A strictly top-down, photorealistic view (shot from directly above) showing 1/4 of a portion of {{fullName}} served in a small white condiment cup. The condiment cup should be a small circular container with visible edges. The topping inside the cup must fill the entire circular opening, forming a perfect full circle with no gaps or missing edges. The food should completely fill the cup's circular opening from edge to edge. If it's a sauce or pesto, show it as a circular mound filling the cup. If it's grated cheese, show it piled in a circular shape filling the cup. If it's vegetables or diced items, arrange them to form a complete circular arrangement that fills the entire cup opening. The circle must be full and complete, with all edges clearly defined and touching the cup's inner rim. The condiment cup and food item must be perfectly centered both vertically and horizontally in the frame, positioned at the exact center of the image. The food item and cup itself may have minimal internal shadows for depth and realism, but the background must be completely pure white extending to all edges and sides of the image. No shadows cast on the background, no objects. The entire image background from edge to edge must be solid white with no gradients, no shadows, no variations. White sides, white edges, pure white background throughout."
+    }
+  ]
+}
+
