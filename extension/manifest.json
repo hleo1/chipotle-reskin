@@ -22,7 +22,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["images/replacement-image.png", "pictures/*.png"],
+      "resources": ["images/replacement-image.png", "pictures/**/*.png", "hero-section/**/*.png"],
       "matches": ["https://www.chipotle.com/*"]
     }
   ]

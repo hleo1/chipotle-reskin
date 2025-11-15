@@ -2,11 +2,14 @@ import { FoodImageGenerator, type FoodItem } from "./FoodImageGenerator";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
+// Type-safe food types based on food-config.json
+type FoodType = "rice" | "protein-vegetable" | "beans" | "toppings";
+
 interface FoodConfig {
   apiKey: string;
   country: string;
   categories: {
-    foodType: string;
+    foodType: FoodType;
     items: FoodItem[];
     promptTemplate: string;
   }[];
