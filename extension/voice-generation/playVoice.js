@@ -49,6 +49,8 @@ function stopCurrentAudio() {
       currentAudio.currentTime = 0;
       currentAudio = null;
       isPlaying = false;
+      // Stop video avatar when audio stops
+      stopVideoAvatar();
     } catch (error) {
       console.error('Error stopping audio:', error);
     }
@@ -56,11 +58,88 @@ function stopCurrentAudio() {
 }
 
 /**
+ * Play video avatar (smiling.mp4 or frustrated.mp4) when audio plays
+ * @param {boolean} isFallback - If true, play frustrated.mp4, otherwise play smiling.mp4
+ */
+function playVideoAvatar(isFallback = false) {
+  try {
+    const videoContainer = document.querySelector('.chipotle-top-video');
+    if (!videoContainer) {
+      return;
+    }
+    
+    const video = videoContainer.querySelector('video');
+    if (!video) {
+      return;
+    }
+    
+    // Get current cuisine
+    const cuisineElement = document.querySelector('[data-cuisine]');
+    const cuisine = cuisineElement ? cuisineElement.getAttribute('data-cuisine') : 'italian';
+    const cuisinesWithVideos = ['bronx', 'chinese', 'italian'];
+    
+    if (!cuisinesWithVideos.includes(cuisine)) {
+      return;
+    }
+    
+    // Choose video based on whether it's a fallback
+    const videoFile = isFallback ? 'frustrated.mp4' : 'smiling.mp4';
+    const expectedUrl = chrome.runtime.getURL(`videos/${cuisine}/${videoFile}`);
+    
+    // Update video source if needed
+    if (!video.src.includes(`videos/${cuisine}/${videoFile}`)) {
+      video.src = expectedUrl;
+      video.load();
+    }
+    
+    // Reset to beginning and play
+    video.currentTime = 0;
+    const playPromise = video.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        // Silently handle autoplay errors
+        if (error.name !== 'NotAllowedError' && error.name !== 'NotSupportedError') {
+          console.warn('Video playback error:', error);
+        }
+      });
+    }
+  } catch (error) {
+    // Silently handle errors
+    console.warn('Error playing video avatar:', error);
+  }
+}
+
+/**
+ * Stop video avatar (pause and reset)
+ */
+function stopVideoAvatar() {
+  try {
+    const videoContainer = document.querySelector('.chipotle-top-video');
+    if (!videoContainer) {
+      return;
+    }
+    
+    const video = videoContainer.querySelector('video');
+    if (!video) {
+      return;
+    }
+    
+    video.pause();
+    video.currentTime = 0;
+  } catch (error) {
+    // Silently handle errors
+    console.warn('Error stopping video avatar:', error);
+  }
+}
+
+/**
  * Play audio from a URL (MP3 file)
  * @param {string} audioUrl - URL to the audio file
+ * @param {boolean} isFallback - If true, play frustrated.mp4 video, otherwise play smiling.mp4
  * @returns {Promise<void>} Promise that resolves when audio finishes playing
  */
-function playAudioFromUrl(audioUrl) {
+function playAudioFromUrl(audioUrl, isFallback = false) {
   return new Promise((resolve, reject) => {
     try {
       // Check if user has interacted (required for autoplay policy)
@@ -82,10 +161,15 @@ function playAudioFromUrl(audioUrl) {
       // Preload the audio
       audio.preload = 'auto';
       
+      // Play video avatar when audio starts (pass isFallback flag)
+      playVideoAvatar(isFallback);
+      
       // Handle successful playback
       audio.onended = () => {
         isPlaying = false;
         currentAudio = null;
+        // Stop video avatar when audio ends
+        stopVideoAvatar();
         resolve();
       };
       
@@ -93,6 +177,8 @@ function playAudioFromUrl(audioUrl) {
       audio.onerror = (error) => {
         isPlaying = false;
         currentAudio = null;
+        // Stop video avatar on error
+        stopVideoAvatar();
         const errorMsg = audio.error ? `Code: ${audio.error.code}, Message: ${audio.error.message}` : 'Unknown error';
         console.error('Audio playback error:', errorMsg);
         reject(new Error(`Failed to play audio: ${errorMsg}`));
@@ -110,6 +196,8 @@ function playAudioFromUrl(audioUrl) {
           .catch((error) => {
             isPlaying = false;
             currentAudio = null;
+            // Stop video avatar on error
+            stopVideoAvatar();
             
             // Check if it's an autoplay policy error
             if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') {
@@ -126,6 +214,8 @@ function playAudioFromUrl(audioUrl) {
     } catch (error) {
       isPlaying = false;
       currentAudio = null;
+      // Stop video avatar on error
+      stopVideoAvatar();
       console.error('Error creating audio:', error);
       reject(error);
     }
@@ -216,6 +306,12 @@ window.VoiceSystem.playVoice = async function(text, voiceConfig, apiKey = null) 
     return;
   }
   
+  // Detect if this is a fallback/scream audio by checking the mp3Path
+  const isFallback = voiceConfig.mp3Path && (
+    voiceConfig.mp3Path.includes('scream') || 
+    voiceConfig.mp3Path.includes('fallback')
+  );
+  
   // Stop any currently playing audio
   stopCurrentAudio();
   
@@ -224,7 +320,7 @@ window.VoiceSystem.playVoice = async function(text, voiceConfig, apiKey = null) 
     try {
       console.log('Attempting ElevenLabs API playback...');
       const audioUrl = await generateElevenLabsAudio(text, voiceConfig.elevenlabsId, apiKey);
-      await playAudioFromUrl(audioUrl);
+      await playAudioFromUrl(audioUrl, isFallback);
       // Clean up blob URL after playback
       URL.revokeObjectURL(audioUrl);
       return;
@@ -239,7 +335,7 @@ window.VoiceSystem.playVoice = async function(text, voiceConfig, apiKey = null) 
     console.log('Playing local MP3 file:', voiceConfig.mp3Path);
     const mp3Url = chrome.runtime.getURL(voiceConfig.mp3Path);
     console.log('MP3 URL:', mp3Url);
-    await playAudioFromUrl(mp3Url);
+    await playAudioFromUrl(mp3Url, isFallback);
     console.log('MP3 playback completed');
   } catch (error) {
     // Only log error, don't throw - autoplay blocking is expected
