@@ -14,15 +14,15 @@
   // Food items configuration organized by section
   const FOOD_ITEMS_BY_SECTION = {
     'protein-or-veggie': [
-      { image: 'italian/proteins_veg/braised-beef-stracotto.png', name: 'Beef Stracotto' },
-      { image: 'italian/proteins_veg/eggplant-mushroom.png', name: 'Eggplant Mushroom' },
-      { image: 'italian/proteins_veg/garlic-shrimp.png', name: 'Garlic Shrimp' },
-      { image: 'italian/proteins_veg/herbed-chicken.png', name: 'Herbed Chicken' },
-      { image: 'italian/proteins_veg/sausage-peppers.png', name: 'Sausage Peppers' }
+      { image: 'italian/protein-vegetable/braised-beef-stracotto.png', name: 'Beef Stracotto' },
+      { image: 'italian/protein-vegetable/eggplant-mushroom.png', name: 'Eggplant Mushroom' },
+      { image: 'italian/protein-vegetable/garlic-shrimp.png', name: 'Garlic Shrimp' },
+      { image: 'italian/protein-vegetable/herbed-chicken.png', name: 'Herbed Chicken' },
+      { image: 'italian/protein-vegetable/sausage-peppers.png', name: 'Sausage Peppers' }
     ],
     'rice': [
-      { image: 'italian/carbs/polenta.png', name: 'Polenta' },
-      { image: 'italian/carbs/risotto.png', name: 'Risotto' }
+      { image: 'italian/rice/polenta.png', name: 'Polenta' },
+      { image: 'italian/rice/risotto.png', name: 'Risotto' }
     ],
     'beans': [
       { image: 'italian/beans/borlotti-beans.png', name: 'Borlotti Beans' },
