@@ -60,4 +60,5 @@ yarn-error.log*
 
 # Optional: Uncomment if you want to ignore config with API key
 # photo_pipeline/food-config.json
-*.png
+
+photo_pipeline/**/*.png

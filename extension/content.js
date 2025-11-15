@@ -4,40 +4,197 @@
 (function() {
   'use strict';
 
-  // Hero section configuration
-  const HERO_SECTION = {
-    title: "Your Italian Piatto",
-    description: "Build your ideal Italian bowl with your choice of Pollo Arrosto, Stracotto di Manzo, Salsiccia e Peperoni, Gamberetti Aglio e Olio, or Melanzane e Funghi. Served with creamy Risotto or Polenta, alongside Fagioli Cannellini or Borlotti Beans. Finish it your way with fresh Bruschetta Topping, authentic Parmigiano Reggiano, vibrant Peperonata, or rich Pesto alla Genovese.",
-    image: 'hero-section/italian/hero-image.png'
+  // Cuisine configurations
+  const CUISINE_CONFIGS = {
+    italian: {
+      hero: {
+        title: "Your Italian Piatto",
+        description: "Build your ideal Italian bowl with your choice of Pollo Arrosto, Stracotto di Manzo, Salsiccia e Peperoni, Gamberetti Aglio e Olio, or Melanzane e Funghi. Served with creamy Risotto or Polenta, alongside Fagioli Cannellini or Borlotti Beans. Finish it your way with fresh Bruschetta Topping, authentic Parmigiano Reggiano, vibrant Peperonata, or rich Pesto alla Genovese.",
+        image: 'hero-section/italian/hero-image.png'
+      },
+      foodItems: {
+        'protein-or-veggie': [
+          { image: 'italian/protein-vegetable/braised-beef-stracotto.png', name: 'Beef Stracotto' },
+          { image: 'italian/protein-vegetable/eggplant-mushroom.png', name: 'Eggplant Mushroom' },
+          { image: 'italian/protein-vegetable/garlic-shrimp.png', name: 'Garlic Shrimp' },
+          { image: 'italian/protein-vegetable/herbed-chicken.png', name: 'Herbed Chicken' },
+          { image: 'italian/protein-vegetable/sausage-peppers.png', name: 'Sausage Peppers' }
+        ],
+        'rice': [
+          { image: 'italian/rice/polenta.png', name: 'Polenta' },
+          { image: 'italian/rice/risotto.png', name: 'Risotto' }
+        ],
+        'beans': [
+          { image: 'italian/beans/borlotti-beans.png', name: 'Borlotti Beans' },
+          { image: 'italian/beans/cannellini-beans.png', name: 'Cannellini Beans' }
+        ],
+        'toppings': [
+          { image: 'italian/toppings/basil-pesto.png', name: 'Basil Pesto' },
+          { image: 'italian/toppings/bruschetta-topping.png', name: 'Bruschetta Topping' },
+          { image: 'italian/toppings/grated-parmesan.png', name: 'Grated Parmesan' },
+          { image: 'italian/toppings/peperonata.png', name: 'Peperonata' }
+        ]
+      }
+    },
+    chinese: {
+      hero: {
+        title: "Craft Your Wok",
+        description: "Your personalized Chinese bowl, crafted with fresh ingredients. Choose from savory General Tso's, Kung Pao Chicken, Sweet and Sour Pork, Mapo Tofu, or Beef and Broccoli. Pair with Steamed White or Fried Rice, then finish with Edamame or Black Bean Sauce, Soy Sauce, Chili Oil, Hoisin, or Duck Sauce. Fresh, flavorful, and all yours.",
+        image: 'hero-section/chinese/hero-image.png'
+      },
+      foodItems: {
+        'protein-or-veggie': [
+          { image: 'chinese/protein-vegetable/general-tso-chicken.png', name: "General Tso's Chicken" },
+          { image: 'chinese/protein-vegetable/kung-pao-chicken.png', name: 'Kung Pao Chicken' },
+          { image: 'chinese/protein-vegetable/sweet-sour-pork.png', name: 'Sweet and Sour Pork' },
+          { image: 'chinese/protein-vegetable/mapo-tofu.png', name: 'Mapo Tofu' },
+          { image: 'chinese/protein-vegetable/beef-broccoli.png', name: 'Beef and Broccoli' }
+        ],
+        'rice': [
+          { image: 'chinese/rice/steamed-rice.png', name: 'Steamed Rice' },
+          { image: 'chinese/rice/fried-rice.png', name: 'Fried Rice' }
+        ],
+        'beans': [
+          { image: 'chinese/beans/edamame.png', name: 'Edamame' },
+          { image: 'chinese/beans/black-bean-sauce.png', name: 'Black Bean Sauce' }
+        ],
+        'toppings': [
+          { image: 'chinese/toppings/soy-sauce.png', name: 'Soy Sauce' },
+          { image: 'chinese/toppings/chili-oil.png', name: 'Chili Oil' },
+          { image: 'chinese/toppings/hoisin-sauce.png', name: 'Hoisin Sauce' },
+          { image: 'chinese/toppings/duck-sauce.png', name: 'Duck Sauce' }
+        ]
+      }
+    },
+    bronx: {
+      hero: {
+        title: "Boogie Down Bowl",
+        description: "Craft your perfect Bronx Plate. Choose from savory Fried Chicken, tender BBQ Ribs, Collard Greens with Smoked Turkey, creamy Mac and Cheese, or crispy Fried Catfish. Add your choice of Dirty Rice or Jambalaya Rice, plus Black-Eyed Peas or Red Beans. Top it all with Hot Sauce, BBQ Sauce, Honey Mustard, or Ranch for a taste that's all your own.",
+        image: 'hero-section/bronx/hero-image.png'
+      },
+      foodItems: {
+        'protein-or-veggie': [
+          { image: 'bronx/protein-vegetable/fried-chicken.png', name: 'Fried Chicken' },
+          { image: 'bronx/protein-vegetable/bbq-ribs.png', name: 'BBQ Ribs' },
+          { image: 'bronx/protein-vegetable/collard-greens-turkey.png', name: 'Collard Greens with Turkey' },
+          { image: 'bronx/protein-vegetable/mac-cheese.png', name: 'Mac and Cheese' },
+          { image: 'bronx/protein-vegetable/fried-catfish.png', name: 'Fried Catfish' }
+        ],
+        'rice': [
+          { image: 'bronx/rice/dirty-rice.png', name: 'Dirty Rice' },
+          { image: 'bronx/rice/jambalaya-rice.png', name: 'Jambalaya Rice' }
+        ],
+        'beans': [
+          { image: 'bronx/beans/black-eyed-peas.png', name: 'Black-Eyed Peas' },
+          { image: 'bronx/beans/red-beans.png', name: 'Red Beans' }
+        ],
+        'toppings': [
+          { image: 'bronx/toppings/hot-sauce.png', name: 'Hot Sauce' },
+          { image: 'bronx/toppings/bbq-sauce.png', name: 'BBQ Sauce' },
+          { image: 'bronx/toppings/honey-mustard.png', name: 'Honey Mustard' },
+          { image: 'bronx/toppings/ranch-dressing.png', name: 'Ranch Dressing' }
+        ]
+      }
+    },
+    brooklyn: {
+      hero: {
+        title: "Brooklyn Street Eats",
+        description: "Build your Brooklyn bowl with your choice of freshly prepared Soul Food Fried Chicken, Smothered Pork Chops, Oxtails, or Fried Whiting. Pair it with Yellow Rice or classic Rice and Gravy, plus Black Beans and Rice or Red Beans. Add sweet Candied Yams for a perfect touch. Finish your custom creation with Hot Sauce, BBQ, Tartar, or Honey Hot.",
+        image: 'hero-section/brooklyn/hero-image.png'
+      },
+      foodItems: {
+        'protein-or-veggie': [
+          { image: 'brooklyn/protein-vegetable/soul-fried-chicken.png', name: 'Soul Food Fried Chicken' },
+          { image: 'brooklyn/protein-vegetable/smothered-pork-chops.png', name: 'Smothered Pork Chops' },
+          { image: 'brooklyn/protein-vegetable/oxtails.png', name: 'Oxtails' },
+          { image: 'brooklyn/protein-vegetable/candied-yams.png', name: 'Candied Yams' },
+          { image: 'brooklyn/protein-vegetable/fried-whiting.png', name: 'Fried Whiting' }
+        ],
+        'rice': [
+          { image: 'brooklyn/rice/yellow-rice.png', name: 'Yellow Rice' },
+          { image: 'brooklyn/rice/rice-gravy.png', name: 'Rice and Gravy' }
+        ],
+        'beans': [
+          { image: 'brooklyn/beans/black-beans-rice.png', name: 'Black Beans and Rice' },
+          { image: 'brooklyn/beans/red-beans.png', name: 'Red Beans' }
+        ],
+        'toppings': [
+          { image: 'brooklyn/toppings/hot-sauce.png', name: 'Hot Sauce' },
+          { image: 'brooklyn/toppings/bbq-sauce.png', name: 'BBQ Sauce' },
+          { image: 'brooklyn/toppings/tartar-sauce.png', name: 'Tartar Sauce' },
+          { image: 'brooklyn/toppings/honey-hot-sauce.png', name: 'Honey Hot Sauce' }
+        ]
+      }
+    },
+    english: {
+      hero: {
+        title: "Craft English Fare",
+        description: "Your choice of classic English mains: Fish and Chips, Bangers and Mash, Roast Beef, Shepherd's Pie, or Chicken Tikka Masala. Served in a delicious bowl with your pick of Mashed or Roasted Potatoes, plus Baked Beans or Mushy Peas. Top it off with HP Sauce, Malt Vinegar, Brown Gravy, or Mint Sauce for your perfect custom creation.",
+        image: 'hero-section/english/hero-image.png'
+      },
+      foodItems: {
+        'protein-or-veggie': [
+          { image: 'english/protein-vegetable/fish-chips.png', name: 'Fish and Chips' },
+          { image: 'english/protein-vegetable/bangers-mash.png', name: 'Bangers and Mash' },
+          { image: 'english/protein-vegetable/roast-beef.png', name: 'Roast Beef' },
+          { image: 'english/protein-vegetable/shepherds-pie.png', name: "Shepherd's Pie" },
+          { image: 'english/protein-vegetable/chicken-tikka-masala.png', name: 'Chicken Tikka Masala' }
+        ],
+        'rice': [
+          { image: 'english/rice/mashed-potatoes.png', name: 'Mashed Potatoes' },
+          { image: 'english/rice/roasted-potatoes.png', name: 'Roasted Potatoes' }
+        ],
+        'beans': [
+          { image: 'english/beans/baked-beans.png', name: 'Baked Beans' },
+          { image: 'english/beans/mushy-peas.png', name: 'Mushy Peas' }
+        ],
+        'toppings': [
+          { image: 'english/toppings/brown-gravy.png', name: 'Brown Gravy' },
+          { image: 'english/toppings/hp-sauce.png', name: 'HP Sauce' },
+          { image: 'english/toppings/malt-vinegar.png', name: 'Malt Vinegar' },
+          { image: 'english/toppings/mint-sauce.png', name: 'Mint Sauce' }
+        ]
+      }
+    },
+    jamaican: {
+      hero: {
+        title: "Your Yaad Plate",
+        description: "Your choice of savory Jerk Chicken, tender Curry Goat, Brown Stew, Oxtail, or Ackee and Saltfish, served in a vibrant bowl with Jasmine (Rice and Peas) or Coconut Rice and Red Kidney or Black Beans. Top it with fiery Scotch Bonnet sauce, sweet Fried Plantains, crisp Pickled Cabbage, or our signature Jerk sauce. Experience bold, fresh Jamaican flavors, custom-built just for you.",
+        image: 'hero-section/jamaican/hero-image.png'
+      },
+      foodItems: {
+        'protein-or-veggie': [
+          { image: 'jamaican/protein-vegetable/jerk-chicken.png', name: 'Jerk Chicken' },
+          { image: 'jamaican/protein-vegetable/curry-goat.png', name: 'Curry Goat' },
+          { image: 'jamaican/protein-vegetable/brown-stew-chicken.png', name: 'Brown Stew Chicken' },
+          { image: 'jamaican/protein-vegetable/oxtail.png', name: 'Oxtail' },
+          { image: 'jamaican/protein-vegetable/ackee-saltfish.png', name: 'Ackee and Saltfish' }
+        ],
+        'rice': [
+          { image: 'jamaican/rice/jasmine-rice.png', name: 'Jasmine Rice' },
+          { image: 'jamaican/rice/coconut-rice.png', name: 'Coconut Rice' }
+        ],
+        'beans': [
+          { image: 'jamaican/beans/black-beans.png', name: 'Black Beans' },
+          { image: 'jamaican/beans/red-kidney-beans.png', name: 'Red Kidney Beans' }
+        ],
+        'toppings': [
+          { image: 'jamaican/toppings/fried-plantains.png', name: 'Fried Plantains' },
+          { image: 'jamaican/toppings/jerk-sauce.png', name: 'Jerk Sauce' },
+          { image: 'jamaican/toppings/pickled-cabbage.png', name: 'Pickled Cabbage' },
+          { image: 'jamaican/toppings/scotch-bonnet-sauce.png', name: 'Scotch Bonnet Sauce' }
+        ]
+      }
+    }
   };
 
-  // Food items configuration organized by section
-  const FOOD_ITEMS_BY_SECTION = {
-    'protein-or-veggie': [
-      { image: 'italian/protein-vegetable/braised-beef-stracotto.png', name: 'Beef Stracotto' },
-      { image: 'italian/protein-vegetable/eggplant-mushroom.png', name: 'Eggplant Mushroom' },
-      { image: 'italian/protein-vegetable/garlic-shrimp.png', name: 'Garlic Shrimp' },
-      { image: 'italian/protein-vegetable/herbed-chicken.png', name: 'Herbed Chicken' },
-      { image: 'italian/protein-vegetable/sausage-peppers.png', name: 'Sausage Peppers' }
-    ],
-    'rice': [
-      { image: 'italian/rice/polenta.png', name: 'Polenta' },
-      { image: 'italian/rice/risotto.png', name: 'Risotto' }
-    ],
-    'beans': [
-      { image: 'italian/beans/borlotti-beans.png', name: 'Borlotti Beans' },
-      { image: 'italian/beans/cannellini-beans.png', name: 'Cannellini Beans' }
-    ],
-    'toppings': [
-      { image: 'italian/toppings/basil-pesto.png', name: 'Basil Pesto' },
-      { image: 'italian/toppings/bruschetta-topping.png', name: 'Bruschetta Topping' },
-      { image: 'italian/toppings/grated-parmesan.png', name: 'Grated Parmesan' },
-      { image: 'italian/toppings/peperonata.png', name: 'Peperonata' }
-    ]
-  };
+  // Current cuisine (default to italian)
+  let currentCuisine = 'italian';
+  let HERO_SECTION = CUISINE_CONFIGS[currentCuisine].hero;
+  let FOOD_ITEMS_BY_SECTION = CUISINE_CONFIGS[currentCuisine].foodItems;
 
   // Track custom cards to persist their images
-  const customCards = new WeakMap();
+  let customCards = new WeakMap();
 
   // Extract country from image path (e.g., "italian/proteins_veg/..." -> "italian")
   function extractCountryFromImagePath(imagePath) {
@@ -267,6 +424,51 @@
       .chipotle-info-source a:hover {
         text-decoration: underline;
       }
+      
+      /* Cuisine dropdown styles */
+      .chipotle-cuisine-selector {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 10001;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      
+      .chipotle-cuisine-selector label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        white-space: nowrap;
+      }
+      
+      .chipotle-cuisine-selector select {
+        padding: 6px 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+        color: #333;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s ease;
+        min-width: 140px;
+      }
+      
+      .chipotle-cuisine-selector select:hover {
+        border-color: #999;
+      }
+      
+      .chipotle-cuisine-selector select:focus {
+        border-color: #0066cc;
+        box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+      }
     `;
     document.head.appendChild(style);
   }
@@ -461,6 +663,111 @@
     });
   }
 
+  // Function to switch cuisine
+  function switchCuisine(newCuisine) {
+    if (!CUISINE_CONFIGS[newCuisine]) {
+      console.error(`Invalid cuisine: ${newCuisine}`);
+      return;
+    }
+    
+    currentCuisine = newCuisine;
+    HERO_SECTION = CUISINE_CONFIGS[currentCuisine].hero;
+    FOOD_ITEMS_BY_SECTION = CUISINE_CONFIGS[currentCuisine].foodItems;
+    
+    // Save to storage
+    chrome.storage.local.set({ selectedCuisine: currentCuisine });
+    
+    // Update dropdown value
+    const select = document.getElementById('chipotle-cuisine-select');
+    if (select) {
+      select.value = currentCuisine;
+    }
+    
+    // Clear custom cards to force re-render
+    customCards = new WeakMap();
+    
+    // Reset hero section to allow re-customization
+    const header = document.querySelector('.meal-builder-header');
+    if (header) {
+      header.removeAttribute('data-custom-hero');
+    }
+    
+    // Clear all custom image attributes
+    document.querySelectorAll('[data-custom-image]').forEach(card => {
+      card.removeAttribute('data-custom-image');
+    });
+    
+    // Re-apply everything
+    replaceHeroSection();
+    replaceFoodCards();
+    
+    console.log(`Switched to ${currentCuisine} cuisine`);
+  }
+
+  // Function to create cuisine dropdown
+  function createCuisineDropdown() {
+    // Remove existing dropdown if present
+    const existing = document.querySelector('.chipotle-cuisine-selector');
+    if (existing) {
+      return; // Already exists, don't recreate
+    }
+    
+    // Wait for body to be available
+    if (!document.body) {
+      setTimeout(createCuisineDropdown, 100);
+      return;
+    }
+    
+    const selector = document.createElement('div');
+    selector.className = 'chipotle-cuisine-selector';
+    
+    const label = document.createElement('label');
+    label.textContent = 'Cuisine:';
+    label.setAttribute('for', 'chipotle-cuisine-select');
+    
+    const select = document.createElement('select');
+    select.id = 'chipotle-cuisine-select';
+    
+    // Add all cuisine options
+    const cuisines = [
+      { value: 'italian', label: 'Italian' },
+      { value: 'chinese', label: 'Chinese' },
+      { value: 'bronx', label: 'Bronx' },
+      { value: 'brooklyn', label: 'Brooklyn' },
+      { value: 'english', label: 'English' },
+      { value: 'jamaican', label: 'Jamaican' }
+    ];
+    
+    cuisines.forEach(cuisine => {
+      const option = document.createElement('option');
+      option.value = cuisine.value;
+      option.textContent = cuisine.label;
+      select.appendChild(option);
+    });
+    
+    select.value = currentCuisine;
+    
+    select.addEventListener('change', (e) => {
+      switchCuisine(e.target.value);
+    });
+    
+    selector.appendChild(label);
+    selector.appendChild(select);
+    document.body.appendChild(selector);
+  }
+
+  // Function to load saved cuisine preference
+  function loadCuisinePreference() {
+    chrome.storage.local.get('selectedCuisine', (result) => {
+      if (result.selectedCuisine && CUISINE_CONFIGS[result.selectedCuisine]) {
+        currentCuisine = result.selectedCuisine;
+        HERO_SECTION = CUISINE_CONFIGS[currentCuisine].hero;
+        FOOD_ITEMS_BY_SECTION = CUISINE_CONFIGS[currentCuisine].foodItems;
+      }
+      createCuisineDropdown();
+    });
+  }
+
   // Function to replace hero section
   function replaceHeroSection() {
     const header = document.querySelector('.meal-builder-header');
@@ -492,22 +799,34 @@
     const heading = header.querySelector('.heading');
     const name = header.querySelector('.name');
     
-    if (heading && heading.textContent.trim() !== 'BUILD YOUR') {
-      heading.textContent = 'BUILD YOUR';
+    // Update heading based on cuisine title format
+    const titleLower = HERO_SECTION.title.toLowerCase();
+    let headingText = 'BUILD YOUR';
+    let nameText = HERO_SECTION.title;
+    
+    if (titleLower.startsWith('craft your')) {
+      headingText = 'CRAFT YOUR';
+      nameText = HERO_SECTION.title.split(' ').slice(2).join(' ');
+    } else if (titleLower.startsWith('your')) {
+      headingText = 'BUILD YOUR';
+      nameText = HERO_SECTION.title.split(' ').slice(1).join(' ');
+    } else if (titleLower.startsWith('craft')) {
+      headingText = 'CRAFT YOUR';
+      nameText = HERO_SECTION.title.split(' ').slice(1).join(' ');
+    } else {
+      // For titles like "Boogie Down Bowl" or "Brooklyn Street Eats", use full title
+      headingText = 'BUILD YOUR';
+      nameText = HERO_SECTION.title;
+    }
+    
+    if (heading && heading.textContent.trim() !== headingText) {
+      heading.textContent = headingText;
       console.log('Updated hero heading');
     }
     
-    if (name) {
-      // Extract the main title (everything after "Your" or use the full title)
-      const titleParts = HERO_SECTION.title.split(' ');
-      const newName = titleParts.length > 2 && titleParts[0].toLowerCase() === 'your'
-        ? titleParts.slice(1).join(' ')
-        : HERO_SECTION.title;
-      
-      if (name.textContent.trim() !== newName) {
-        name.textContent = newName;
-        console.log('Updated hero title');
-      }
+    if (name && name.textContent.trim() !== nameText) {
+      name.textContent = nameText;
+      console.log('Updated hero title');
     }
 
     // Update description
@@ -530,6 +849,9 @@
 
   // Inject CSS early
   injectPersistentCSS();
+
+  // Load saved cuisine preference and create dropdown
+  loadCuisinePreference();
 
   // Replace hero section
   replaceHeroSection();
