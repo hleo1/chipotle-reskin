@@ -505,7 +505,7 @@
   }
 
   // Helper function to update a card with new image and name
-  function updateCard(card, imageUrl, newName, imagePath) {
+  function updateCard(card, imageUrl, newName, imagePath, sectionName = null) {
     // Store custom image URL in data attribute and WeakMap for persistence
     card.setAttribute('data-custom-image', imageUrl);
     const country = extractCountryFromImagePath(imagePath);
@@ -516,6 +516,9 @@
     
     // Also set CSS custom property as backup
     card.style.setProperty('--custom-bg-image', `url(${imageUrl})`, 'important');
+
+    // Add data-item attribute for voice system
+    card.setAttribute('data-item', newName);
 
     // Update item name
     const itemName = card.querySelector('.item-name');
@@ -581,6 +584,15 @@
 
   // Function to replace food cards in a specific section
   function replaceFoodCardsInSection(sectionName, foodItems) {
+    // Map section names for voice system
+    const sectionMap = {
+      'protein-or-veggie': 'protein',
+      'rice': 'rice',
+      'beans': 'beans',
+      'toppings': 'toppings'
+    };
+    const voiceSectionName = sectionMap[sectionName] || sectionName;
+    
     // Find the section by data-analytics-section attribute
     // Handle empty section name (for toppings which has empty data-analytics-section)
     let section;
@@ -599,6 +611,12 @@
     if (!section) {
       return; // Section not found yet
     }
+
+    // Add data-section attribute for voice system
+    section.setAttribute('data-section', voiceSectionName);
+    
+    // Add data-cuisine attribute to section for voice system
+    section.setAttribute('data-cuisine', currentCuisine);
 
     // Find the cards container within this section
     const cardsContainer = section.querySelector('.cards');
@@ -627,8 +645,10 @@
       
       // Only update if not already customized
       if (cardName !== foodItem.name) {
-        updateCard(card, imageUrl, foodItem.name, foodItem.image);
+        updateCard(card, imageUrl, foodItem.name, foodItem.image, voiceSectionName);
       } else {
+        // Ensure data-item attribute is set
+        card.setAttribute('data-item', foodItem.name);
         // Ensure info button is present even if card is already customized
         const customData = customCards.get(card);
         if (customData && !card.querySelector('.chipotle-info-button')) {
@@ -682,6 +702,14 @@
     if (select) {
       select.value = currentCuisine;
     }
+    
+    // Update data-cuisine attribute on body for voice system
+    document.body.setAttribute('data-cuisine', currentCuisine);
+    
+    // Update data-cuisine on all sections
+    document.querySelectorAll('[data-section]').forEach(section => {
+      section.setAttribute('data-cuisine', currentCuisine);
+    });
     
     // Clear custom cards to force re-render
     customCards = new WeakMap();
@@ -763,6 +791,10 @@
         currentCuisine = result.selectedCuisine;
         HERO_SECTION = CUISINE_CONFIGS[currentCuisine].hero;
         FOOD_ITEMS_BY_SECTION = CUISINE_CONFIGS[currentCuisine].foodItems;
+      }
+      // Set data-cuisine attribute on body for voice system
+      if (document.body) {
+        document.body.setAttribute('data-cuisine', currentCuisine);
       }
       createCuisineDropdown();
     });
@@ -852,6 +884,11 @@
 
   // Load saved cuisine preference and create dropdown
   loadCuisinePreference();
+  
+  // Set initial data-cuisine attribute on body for voice system
+  if (document.body) {
+    document.body.setAttribute('data-cuisine', currentCuisine);
+  }
 
   // Replace hero section
   replaceHeroSection();
