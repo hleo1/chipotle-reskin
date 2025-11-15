@@ -192,6 +192,9 @@
   let currentCuisine = 'italian';
   let HERO_SECTION = CUISINE_CONFIGS[currentCuisine].hero;
   let FOOD_ITEMS_BY_SECTION = CUISINE_CONFIGS[currentCuisine].foodItems;
+  
+  // Video element reference
+  let avatarVideo = null;
 
   // Track custom cards to persist their images
   let customCards = new WeakMap();
@@ -469,6 +472,27 @@
         border-color: #0066cc;
         box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
       }
+      
+      /* Video styles */
+      .chipotle-top-video {
+        position: fixed;
+        top: 180px;
+        left: 0;
+        z-index: 10000;
+        width: 175px;
+        height: 175px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        background-color: #000;
+      }
+      
+      .chipotle-top-video video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -683,6 +707,70 @@
     });
   }
 
+  // Function to create/update video avatar
+  function createVideoAvatar() {
+    // Remove existing video if present
+    const existingVideo = document.querySelector('.chipotle-top-video');
+    if (existingVideo) {
+      existingVideo.remove();
+    }
+    
+    // Only create video for cuisines that have videos
+    const cuisinesWithVideos = ['bronx', 'chinese', 'italian'];
+    if (!cuisinesWithVideos.includes(currentCuisine)) {
+      return;
+    }
+    
+    // Create video container
+    const videoContainer = document.createElement('div');
+    videoContainer.className = 'chipotle-top-video';
+    
+    // Create video element
+    const video = document.createElement('video');
+    video.muted = true;
+    video.playsInline = true;
+    video.loop = false;
+    
+    // Set source to smiling.mp4 for current cuisine
+    const videoUrl = chrome.runtime.getURL(`videos/${currentCuisine}/smiling.mp4`);
+    video.src = videoUrl;
+    
+    // Load first frame but don't autoplay
+    video.load();
+    
+    // Store reference
+    avatarVideo = video;
+    
+    videoContainer.appendChild(video);
+    document.body.appendChild(videoContainer);
+    
+    console.log(`Video avatar created for ${currentCuisine}`);
+  }
+  
+  // Function to update video source when cuisine changes
+  function updateVideoAvatar() {
+    const cuisinesWithVideos = ['bronx', 'chinese', 'italian'];
+    if (!cuisinesWithVideos.includes(currentCuisine)) {
+      // Remove video if cuisine doesn't have videos
+      const existingVideo = document.querySelector('.chipotle-top-video');
+      if (existingVideo) {
+        existingVideo.remove();
+        avatarVideo = null;
+      }
+      return;
+    }
+    
+    if (avatarVideo) {
+      const videoUrl = chrome.runtime.getURL(`videos/${currentCuisine}/smiling.mp4`);
+      avatarVideo.src = videoUrl;
+      avatarVideo.load();
+      avatarVideo.currentTime = 0;
+      avatarVideo.pause();
+    } else {
+      createVideoAvatar();
+    }
+  }
+  
   // Function to switch cuisine
   function switchCuisine(newCuisine) {
     if (!CUISINE_CONFIGS[newCuisine]) {
@@ -710,6 +798,9 @@
     document.querySelectorAll('[data-section]').forEach(section => {
       section.setAttribute('data-cuisine', currentCuisine);
     });
+    
+    // Update video avatar
+    updateVideoAvatar();
     
     // Clear custom cards to force re-render
     customCards = new WeakMap();
@@ -795,6 +886,10 @@
       // Set data-cuisine attribute on body for voice system
       if (document.body) {
         document.body.setAttribute('data-cuisine', currentCuisine);
+        // Create video avatar after cuisine is loaded
+        setTimeout(() => {
+          createVideoAvatar();
+        }, 100);
       }
       createCuisineDropdown();
     });
@@ -888,6 +983,10 @@
   // Set initial data-cuisine attribute on body for voice system
   if (document.body) {
     document.body.setAttribute('data-cuisine', currentCuisine);
+    // Create video avatar after body is ready
+    setTimeout(() => {
+      createVideoAvatar();
+    }, 100);
   }
 
   // Replace hero section

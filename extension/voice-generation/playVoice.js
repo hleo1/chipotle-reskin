@@ -49,9 +49,84 @@ function stopCurrentAudio() {
       currentAudio.currentTime = 0;
       currentAudio = null;
       isPlaying = false;
+      // Stop video avatar when audio stops
+      stopVideoAvatar();
     } catch (error) {
       console.error('Error stopping audio:', error);
     }
+  }
+}
+
+/**
+ * Play video avatar (smiling.mp4) when audio plays
+ */
+function playVideoAvatar() {
+  try {
+    const videoContainer = document.querySelector('.chipotle-top-video');
+    if (!videoContainer) {
+      return;
+    }
+    
+    const video = videoContainer.querySelector('video');
+    if (!video) {
+      return;
+    }
+    
+    // Get current cuisine
+    const cuisineElement = document.querySelector('[data-cuisine]');
+    const cuisine = cuisineElement ? cuisineElement.getAttribute('data-cuisine') : 'italian';
+    const cuisinesWithVideos = ['bronx', 'chinese', 'italian'];
+    
+    if (!cuisinesWithVideos.includes(cuisine)) {
+      return;
+    }
+    
+    // Update video source to smiling.mp4 if needed
+    const expectedUrl = chrome.runtime.getURL(`videos/${cuisine}/smiling.mp4`);
+    // Compare URLs properly (video.src might have different format)
+    if (!video.src.includes(`videos/${cuisine}/smiling.mp4`)) {
+      video.src = expectedUrl;
+      video.load();
+    }
+    
+    // Reset to beginning and play
+    video.currentTime = 0;
+    const playPromise = video.play();
+    
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        // Silently handle autoplay errors
+        if (error.name !== 'NotAllowedError' && error.name !== 'NotSupportedError') {
+          console.warn('Video playback error:', error);
+        }
+      });
+    }
+  } catch (error) {
+    // Silently handle errors
+    console.warn('Error playing video avatar:', error);
+  }
+}
+
+/**
+ * Stop video avatar (pause and reset)
+ */
+function stopVideoAvatar() {
+  try {
+    const videoContainer = document.querySelector('.chipotle-top-video');
+    if (!videoContainer) {
+      return;
+    }
+    
+    const video = videoContainer.querySelector('video');
+    if (!video) {
+      return;
+    }
+    
+    video.pause();
+    video.currentTime = 0;
+  } catch (error) {
+    // Silently handle errors
+    console.warn('Error stopping video avatar:', error);
   }
 }
 
@@ -82,10 +157,15 @@ function playAudioFromUrl(audioUrl) {
       // Preload the audio
       audio.preload = 'auto';
       
+      // Play video avatar when audio starts
+      playVideoAvatar();
+      
       // Handle successful playback
       audio.onended = () => {
         isPlaying = false;
         currentAudio = null;
+        // Stop video avatar when audio ends
+        stopVideoAvatar();
         resolve();
       };
       
@@ -93,6 +173,8 @@ function playAudioFromUrl(audioUrl) {
       audio.onerror = (error) => {
         isPlaying = false;
         currentAudio = null;
+        // Stop video avatar on error
+        stopVideoAvatar();
         const errorMsg = audio.error ? `Code: ${audio.error.code}, Message: ${audio.error.message}` : 'Unknown error';
         console.error('Audio playback error:', errorMsg);
         reject(new Error(`Failed to play audio: ${errorMsg}`));
@@ -110,6 +192,8 @@ function playAudioFromUrl(audioUrl) {
           .catch((error) => {
             isPlaying = false;
             currentAudio = null;
+            // Stop video avatar on error
+            stopVideoAvatar();
             
             // Check if it's an autoplay policy error
             if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') {
@@ -126,6 +210,8 @@ function playAudioFromUrl(audioUrl) {
     } catch (error) {
       isPlaying = false;
       currentAudio = null;
+      // Stop video avatar on error
+      stopVideoAvatar();
       console.error('Error creating audio:', error);
       reject(error);
     }

@@ -34,7 +34,8 @@
         "pictures/**/*.png",
         "hero-section/**/*.png",
         "info-icon.png",
-        "voice-generation/voices/**/*.mp3"
+        "voice-generation/voices/**/*.mp3",
+        "videos/**/*.mp4"
       ],
       "matches": ["https://www.chipotle.com/*"]
     }
